@@ -54,9 +54,9 @@ class quene{
         cout<<"队列为空";
         return T(); //返回默认值，表示队列为空
        } 
-        T val = *head;
-        head++;
-        return val;
+         
+       
+        return *head;
         
     }
 
