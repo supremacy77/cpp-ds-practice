@@ -7,35 +7,36 @@ using namespace std;
 template <class T>
 class quene{
     private:
-    T* base;//队列的基地址
-    T* head;//队列的头指针
-    T* tail;//队列的尾指针
-    int size;
+    T* data;//队列的基地址
+    int head;//队列的头下标
+    int tail;//队列的尾下标
+    int capacity;//队列的容量
     public:
     //构造函数
-    quene(int size){
-        base = new T[size];
-        if(base == nullptr) {
+    quene(int capacity){
+        data = new T[capacity];
+        if(data == nullptr) {
             cout<<"资源申请失败";
             return;
         }
-        head = base;
-        tail = base;
+        head = 0;
+        tail = 0;
+        this->capacity = capacity;
     }
 
     //析构函数
     ~quene(){
-        delete[] base;
+        delete[] data;
     }
 
     //元素入队
     void push(T t){
-        if(tail == base + size){
+        if((tail + 1) % capacity == head){
             cout<<"队列已满";
             return;
         }
-        *tail = t;
-        tail++;
+        data[tail] = t;
+        tail = (tail + 1) % capacity;
 
     }
 
@@ -45,7 +46,7 @@ class quene{
         cout<<"队列为空";
         return;
        } 
-        head++;
+        head = (head + 1) % capacity;
     }
 
     //获取头元素
@@ -54,18 +55,26 @@ class quene{
         cout<<"队列为空";
         return T(); //返回默认值，表示队列为空
        } 
-        T val = *head;
-        head++;
-        return val;
+      T d = data[head];
+      pop(); //出队操作
+        
+        return  d;
         
     }
 
     //辅助功能 打印队列元素
     void print(){
-        for(T* p = head; p != tail; p++){
-            cout<<*p<<" ";
+        if(head == tail){
+            cout<<"队列为空";
+            return;
+        }
+        int i = head;
+        while(i != tail){
+            cout<<data[i]<<" ";
+            i = (i + 1) % capacity;
         }
         cout<<endl;
+       
     }   
 
 
